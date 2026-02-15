@@ -1,15 +1,15 @@
 import React, { ReactNode } from "react";
 import {
+  RefreshControl,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
-  RefreshControl,
   StatusBar,
+  StyleSheet,
 } from "react-native";
 
 import {
-  widthPercentageToDP as wp,
   heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 
 type Props = {
@@ -57,19 +57,17 @@ export default function ScreenWrapper({
   );
 }
 
-const styles = StyleSheet.create({
 
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal:wp("4%"),
+    flex: 1,  // FIXED
+    paddingHorizontal: wp("4%"),
     paddingVertical: hp("2%"),
+    backgroundColor: "#fff",
   },
 
   content: {
-    paddingHorizontal: wp("4%"), // responsive horizontal padding
-    paddingVertical: hp("2%"),   // responsive vertical padding
     flexGrow: 1,
   },
-
 });
+

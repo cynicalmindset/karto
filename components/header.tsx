@@ -1,16 +1,26 @@
 /* eslint-disable */
+import { supabase } from "@/lib/supabase";
+import { getusers } from "@/services/profileservice";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import {
-  useSafeAreaInsets
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 type Props = {
   title?: string;
-  profileURI?: string | null;
 };
 
-export default function header({ title, profileURI }: Props) {
+export default function header({ title }: Props) {
+  const [profile, setprofile] = useState<any>(null);
+  useEffect(() => {
+    async function loadprofile() {
+      const user = (await supabase.auth.getUser()).data.user;
+      if (!user) return;
+
+      const data = await getusers(user.id);
+      setprofile(data);
+    }
+    loadprofile();
+  }, []);
   const router = useRouter();
   const insets = useSafeAreaInsets();
   return (
@@ -33,8 +43,8 @@ export default function header({ title, profileURI }: Props) {
         <Image
           style={styles.pfp}
           source={
-            profileURI
-              ? { uri: profileURI }
+            profile?.profile_pic
+              ? { uri: profile.profile_pic + "?t=" + Date.now() }
               : require("../assets/img/avatar.png")
           }
         />
@@ -66,7 +76,7 @@ const styles = StyleSheet.create({
   profile: {
     position: "absolute",
     right: 8,
-    
+
     //backgroundColor: "#d1d1d1",
   },
   pfp: {
