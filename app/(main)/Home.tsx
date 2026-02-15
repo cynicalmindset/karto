@@ -2,9 +2,11 @@ import ScreenWrapper from "@/components/ScreenWrapper";
 import { Button } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet,ScrollView } from "react-native";
 import { supabase } from "../../lib/supabase";
 //import { useRouter } from "expo-router";
+import Header from "@/components/header";
+//import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
 
 const Home = () => {
   async function handleLogout() {
@@ -20,10 +22,13 @@ const Home = () => {
 
   const router = useRouter();
   return (
-    <ScreenWrapper>
-      <Button onPress={() => handleLogout()} variant="filled" color="#007AFF">
-        logout
-      </Button>
+    <ScreenWrapper scroll={false}>
+      <Header title="Home"/>
+      <ScrollView>
+        <Button onPress={() => handleLogout()} variant="filled" color="#007AFF">
+          logout
+        </Button>
+      </ScrollView>
     </ScreenWrapper>
   );
 };
