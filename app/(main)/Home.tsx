@@ -1,42 +1,49 @@
 import ScreenWrapper from "@/components/ScreenWrapper";
 //import { Button } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
-import React, { useMemo, useRef, useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity
-} from "react-native";
-import { supabase } from "../../lib/supabase";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 //import { useRouter } from "expo-router";
 import FAB from "@/components/FAB";
 import Header from "@/components/header";
 import { theme } from "@/theme";
-import BottomSheet, {
-  BottomSheetView
-} from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 //import { Picker } from "@react-native-picker/picker";
 import DropdownComponent from "@/components/Dropdown";
-import { createitem } from "@/services/itemservice";
+import ItemList from "@/components/itemlist";
+import { createitem, getitem } from "@/services/itemservice";
 import { TextInput } from "react-native-gesture-handler";
 //import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
 
 const Home = () => {
   const [name, setname] = useState("");
+  const [items, setitems] = useState<any[]>([]);
   const [note, setnote] = useState("");
   const [urgent, seturgent] = useState("");
   const [purchased, setpurchased] = useState("done");
 
+  useEffect(() => {
+    loaditems();
+  }, []);
+
+  async function loaditems() {
+    const data = await getitem();
+    setitems(data);
+  }
+
   const handelsave = async () => {
     try {
+      if(!name||!note||!urgent){
+        Alert.alert("fill all details")
+        return;
+      }
       await createitem(name, note, urgent, purchased);
       setname("");
       setnote("");
       seturgent("");
       console.log("item saved");
       bottomsheetref.current?.close();
-      router.reload();
+      await loaditems();
     } catch (error) {
       console.log(error);
     }
@@ -44,22 +51,14 @@ const Home = () => {
 
   const bottomsheetref = useRef<BottomSheet>(null);
   const snapPoint = useMemo(() => ["45%", "70%"], []);
-  async function handleLogout() {
-    const { error } = await supabase.auth.signOut();
-
-    if (error) {
-      console.log("Logout error:", error.message);
-      return;
-    }
-
-    router.replace("/(auth)/onboarding");
-  }
 
   const router = useRouter();
   return (
-    <ScreenWrapper scroll={true}>
+    <ScreenWrapper scroll={false}>
       <Header title="Home" />
-      <ScrollView></ScrollView>
+      
+        <ItemList items={items} reload={loaditems} />
+      
 
       <FAB onPress={() => bottomsheetref.current?.expand()} />
 

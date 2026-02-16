@@ -23,6 +23,18 @@ import Header from "../../components/header";
 //import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated'
 
 const profile = () => {
+async function handleLogout() { //define this logout button
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.log("Logout error:", error.message);
+      return;
+    }
+
+    router.replace("/(auth)/onboarding");
+  }
+
+
   async function pickImage() {
     try {
       // Ask permission
