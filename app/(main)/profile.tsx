@@ -134,7 +134,7 @@ const profile = () => {
   const [refrest, setrefresh] = useState(false);
 
   const bottomsheetref = useRef<BottomSheet>(null);
-  const snapPonints = useMemo(() => ["55%"], []);
+  const snapPonints = useMemo(() => ["45%"], []);
   //const [open, setOpen] = useState(false);
   const router = useRouter();
   return (

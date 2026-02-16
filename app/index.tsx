@@ -3,16 +3,18 @@ import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { useAuthContext } from "../hooks/use-auth-context";
-
+/*eslint-disable*/
 
 
 const index = () => {
+  
   const router = useRouter();
-  const { session, loading } = useAuthContext();
+ 
+  const { session } = useAuthContext();
 
   useEffect(() => {
     // Wait until auth finishes loading
-    if (loading) return;
+    if (!session) return;
 
     // Delay navigation slightly to ensure layout mounts
     const timeout = setTimeout(() => {
@@ -24,7 +26,7 @@ const index = () => {
     }, 2000);
 
     return () => clearTimeout(timeout);
-  }, [session, loading]);
+  }, [session]);
   return (
     <ScreenWrapper>
       <View style={styles.container}>
