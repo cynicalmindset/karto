@@ -1,8 +1,8 @@
 import ScreenWrapper from "@/components/ScreenWrapper";
 //import { Button } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useMemo, useRef, useState} from "react";
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 //import { useRouter } from "expo-router";
 import FAB from "@/components/FAB";
 import Header from "@/components/header";
@@ -13,6 +13,7 @@ import DropdownComponent from "@/components/Dropdown";
 import ItemList from "@/components/itemlist";
 import { createitem, getitem } from "@/services/itemservice";
 import { TextInput } from "react-native-gesture-handler";
+//import { View } from "react-native-reanimated/lib/typescript/Animated";
 //import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
 
 const Home = () => {
@@ -50,14 +51,16 @@ const Home = () => {
   };
 
   const bottomsheetref = useRef<BottomSheet>(null);
-  const snapPoint = useMemo(() => ["45%", "70%"], []);
+  const snapPoint = useMemo(() => ["45%"], []);
 
   const router = useRouter();
   return (
     <ScreenWrapper scroll={false}>
       <Header title="Home" />
       
-        <ItemList items={items} reload={loaditems} />
+
+      <ItemList items={items} reload={loaditems} />
+      
       
 
       <FAB onPress={() => bottomsheetref.current?.expand()} />
